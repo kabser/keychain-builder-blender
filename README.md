@@ -7,15 +7,10 @@
 ---
 
 Generate 3D-printable text keychains in one click directly inside Blender.  
-Type your text, pick a font, press **Build** — get a ready-to-print STL.
-
-
-<img width="1264" height="847" alt="Names" src="https://github.com/user-attachments/assets/dfe30093-2835-4f91-9db8-a332f20ed04e" />
-
-<img width="1184" height="912" alt="Number_phone" src="https://github.com/user-attachments/assets/6d8e9009-6e1e-4728-8e9a-b8c38f792be0" />
-
-<img width="1264" height="847" alt="Games" src="https://github.com/user-attachments/assets/2ec32ff1-50f4-4810-b818-4af9ca0f5e02" />
-
+Type your text, pick a font, press Build — get a ready-to-print STL.
+![Keychains with names](https://raw.githubusercontent.com/kabser/keychain-builder-blender/main/images/Names.png)
+![Keychains with phone numbers](https://raw.githubusercontent.com/kabser/keychain-builder-blender/main/images/Number_phone.png)
+![Keychains with game themes](https://raw.githubusercontent.com/kabser/keychain-builder-blender/main/images/Games.png)
 
 ---
 
