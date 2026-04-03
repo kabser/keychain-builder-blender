@@ -56,7 +56,7 @@ Type your text, pick a font, press Build — get a ready-to-print STL.
 If this addon saves you time, consider buying me a coffee ☕
 
 - 🌍 International: [Gumroad](https://gumroad.com/YOUR_LINK_HERE) ← *заменить на реальную ссылку*
-- 🇷🇺 Russia / СНГ: [Boosty](https://boosty.to/YOUR_LINK_HERE) ← *заменить на реальную ссылку*
+- 🇷🇺 Russia / СНГ: [Boosty](https://boosty.to/keychain)
 
 Your support helps me keep improving the addon.
 
@@ -67,7 +67,7 @@ Your support helps me keep improving the addon.
 Found a bug or have a suggestion?
 
 - 💬 Open an [Issue](https://github.com/kabser/keychain-builder-blender/issues) on GitHub
-- 📣 Telegram channel: [t.me/YOUR_CHANNEL](https://t.me/YOUR_CHANNEL) ← *заменить на реальную ссылку*
+- 📣 Telegram-канал: [t.me/keychain_for_you](https://t.me/keychain_for_you)
 
 ---
 
@@ -129,7 +129,7 @@ GNU GPL v3 — see [LICENSE](LICENSE)
 Если аддон оказался полезным — угости меня кофе ☕
 
 - 🌍 Международные карты: [Gumroad](https://gumroad.com/YOUR_LINK_HERE) ← *заменить на реальную ссылку*
-- 🇷🇺 Россия / СНГ: [Boosty](https://boosty.to/YOUR_LINK_HERE) ← *заменить на реальную ссылку*
+- 🇷🇺 Россия / СНГ: [Boosty](https://boosty.to/keychain)
 
 Это помогает мне развивать аддон дальше.
 
@@ -140,7 +140,7 @@ GNU GPL v3 — see [LICENSE](LICENSE)
 Нашёл баг или есть идея для улучшения?
 
 - 💬 Открой [Issue](https://github.com/kabser/keychain-builder-blender/issues) на GitHub
-- 📣 Telegram-канал: [t.me/YOUR_CHANNEL](https://t.me/YOUR_CHANNEL) ← *заменить на реальную ссылку*
+- 📣 Telegram-канал: [t.me/keychain_for_you](https://t.me/keychain_for_you)
 
 ---
 
