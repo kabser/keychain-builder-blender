@@ -55,7 +55,7 @@ Type your text, pick a font, press Build — get a ready-to-print STL.
 
 If this addon saves you time, consider buying me a coffee ☕
 
-- 🌍 International: [Gumroad](https://gumroad.com/YOUR_LINK_HERE) ← *заменить на реальную ссылку*
+- 🌍 International: [Gumroad](https://gumroad.com/YOUR_LINK_HERE) ← *temporarily inactive*
 - 🇷🇺 Russia / СНГ: [Boosty](https://boosty.to/keychain)
 
 Your support helps me keep improving the addon.
@@ -128,7 +128,7 @@ GNU GPL v3 — see [LICENSE](LICENSE)
 
 Если аддон оказался полезным — угости меня кофе ☕
 
-- 🌍 Международные карты: [Gumroad](https://gumroad.com/YOUR_LINK_HERE) ← *заменить на реальную ссылку*
+- 🌍 Международные карты: [Gumroad](https://gumroad.com/YOUR_LINK_HERE) ← *временно не активно*
 - 🇷🇺 Россия / СНГ: [Boosty](https://boosty.to/keychain)
 
 Это помогает мне развивать аддон дальше.
