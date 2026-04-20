@@ -87,15 +87,16 @@ Type your text, pick a font, press **Create Keychain** — get a ready-to-print 
 
 | Parameter | Default |
 |-----------|---------|
-| Base Offset | 3.0 mm |
-| Base Height | 3.0 mm |
+| Base Offset | 2.0 mm |
+| Base Height | 2.0 mm |
 | Letter Height | 2.0 mm |
 | Ear Side | Left |
-| Ear Length X | 8.0 mm |
-| Ear Width Y | 8.0 mm |
+| Ear Length X | 6.0 mm |
+| Ear Width Y | 6.0 mm |
 | Chamfer | 1.5 mm |
 | Chamfer Segments | 4 |
 | Hole Diameter | 2.0 mm |
+| Hole Edge Margin | 2.0 mm |
 
 ---
 
@@ -207,6 +208,7 @@ GNU GPL v3 — see [LICENSE](LICENSE)
 | Chamfer Segments | 1 = плоская фаска 45°, 4–8 = плавное скругление. |
 | Y Offset (mm) | Смещение ушка вверх/вниз относительно центра подложки. |
 | Hole Diameter (mm) | Диаметр отверстия. Отверстие располагается в 2 мм от края ушка. Рекомендуется: 2–4 мм. |
+| Hole Edge Margin | Расстояние от ближайшего края отверстия до внешнего края ушка |
 
 ---
 
@@ -223,6 +225,7 @@ GNU GPL v3 — see [LICENSE](LICENSE)
 | Chamfer | 1.5 мм |
 | Chamfer Segments | 4 |
 | Hole Diameter | 2.0 мм |
+| Hole Edge Margin | 2.0 mm |
 
 ---
 
