@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Keychain Maker",
     "author": "@kabser",
-    "version": (1, 1, 0),
+    "version": (1, 1, 1),
     "blender": (4, 0, 0),
     "location": "View3D > N-Panel > Keychain",
     "description": "Keychain generator with ear",
@@ -25,6 +25,7 @@ translations_dict = {
     "ru_RU": {
         # Операторы
         ("*", "Create Keychain"):                    "Создать брелок",
+        ("*", "Generate a 3D-printable keychain from the current settings"): "Создать брелок для 3D-печати на основе текущих настроек",
         ("*", "Reset Settings"):                     "Сбросить настройки",
         ("*", "Reset all parameters to default values"): "Вернуть все параметры к значениям по умолчанию",
 
@@ -56,6 +57,7 @@ translations_dict = {
         ("*", "Chamfer Segments"):                   "Сегменты фаски",
         ("*", "Y Offset (mm)"):                      "Смещение по Y (мм)",
         ("*", "Hole Diameter (mm)"):                 "Диаметр отверстия (мм)",
+        ("*", "Hole Edge Margin (mm)"):             "Отступ от края ушка (мм)",
 
         # Свойства — подсказки
         ("*", "Text to engrave on the keychain"):    "Надпись на брелоке",
@@ -74,6 +76,7 @@ translations_dict = {
         ("*", "Number of chamfer segments (1 = flat, 4+ = rounded)"): "Количество сегментов фаски (1 = прямая, 4+ = скругление)",
         ("*", "Ear offset along Y relative to base centre"): "Смещение ушка по Y относительно центра подложки",
         ("*", "Diameter of the key ring hole"):      "Диаметр отверстия для кольца",
+        ("*", "Distance from the nearest hole edge to the outer ear edge"): "Расстояние от ближайшего края отверстия до внешнего края ушка",
     }
 }
 
@@ -422,12 +425,12 @@ def create_ear_2d_right(context, inner_x, outer_x, y0, y1, chamfer, segs):
 # Отверстие в ушке
 # ---------------------------------------------------------------------------
 
-def cut_ear_hole(context, obj, outer_x, yc, base_h, hole_d, side="LEFT"):
+def cut_ear_hole(context, obj, outer_x, yc, base_h, hole_d, side="LEFT", margin=2.0):
     hole_r = hole_d / 2.0
     if side == "LEFT":
-        cx = outer_x + hole_r + 2.0
+        cx = outer_x + hole_r + margin
     else:
-        cx = outer_x - hole_r - 2.0
+        cx = outer_x - hole_r - margin
     cy  = yc
     cz  = base_h / 2.0
 
@@ -454,9 +457,10 @@ def cut_ear_hole(context, obj, outer_x, yc, base_h, hole_d, side="LEFT"):
 # ---------------------------------------------------------------------------
 
 class KEYCHAIN_OT_Generate(Operator):
-    bl_idname  = "keychain.generate"
-    bl_label   = "Create Keychain"
-    bl_options = {"REGISTER", "UNDO"}
+    bl_idname      = "keychain.generate"
+    bl_label       = "Create Keychain"
+    bl_description = "Generate a 3D-printable keychain from the current settings"
+    bl_options     = {"REGISTER", "UNDO"}
 
     def execute(self, context):
         props     = context.scene.keychain_props
@@ -593,7 +597,8 @@ class KEYCHAIN_OT_Generate(Operator):
             cut_ear_hole(context, final_obj,
                          ear_info["outer_x"], ear_info["yc"],
                          base_h, props.lug_hole_diameter,
-                         ear_info.get("side", "LEFT"))
+                         ear_info.get("side", "LEFT"),
+                         props.lug_hole_margin)
 
         # ── 9. Shade Auto Smooth ───────────────────────────────────────────
         set_active(context, final_obj)
@@ -619,7 +624,7 @@ class KeychainProperties(PropertyGroup):
     text: StringProperty(
         name="Text",
         description="Text to engrave on the keychain",
-        default="IVAN")
+        default="Sergey")
     font_path: StringProperty(
         name="Font (.ttf)",
         description="Path to TTF/OTF font file",
@@ -632,7 +637,7 @@ class KeychainProperties(PropertyGroup):
     base_offset: FloatProperty(
         name="Base Offset (mm)",
         description="How much the base extends beyond the letters",
-        default=3.0, min=0.5, max=30.0,
+        default=2.0, min=0.5, max=30.0,
         precision=1, step=10)
     base_height: FloatProperty(
         name="Base Height (mm)",
@@ -659,12 +664,12 @@ class KeychainProperties(PropertyGroup):
     lug_size_x: FloatProperty(
         name="Ear Length X (mm)",
         description="Ear length along X axis",
-        default=8.0, min=3.0, max=30.0,
+        default=6.0, min=3.0, max=30.0,
         precision=1, step=10)
     lug_size_y: FloatProperty(
         name="Ear Width Y (mm)",
         description="Ear width along Y axis",
-        default=8.0, min=3.0, max=30.0,
+        default=6.0, min=3.0, max=30.0,
         precision=1, step=10)
     lug_chamfer: FloatProperty(
         name="Chamfer (mm)",
@@ -685,6 +690,11 @@ class KeychainProperties(PropertyGroup):
         description="Diameter of the key ring hole",
         default=2.0, min=0.5, max=10.0,
         precision=1, step=5)
+    lug_hole_margin: FloatProperty(
+        name="Hole Edge Margin (mm)",
+        description="Distance from the nearest hole edge to the outer ear edge",
+        default=2.0, min=0.5, max=10.0,
+        precision=1, step=5)
 
 
 # ---------------------------------------------------------------------------
@@ -699,20 +709,21 @@ class KEYCHAIN_OT_Reset(Operator):
 
     def execute(self, context):
         p = context.scene.keychain_props
-        p.text                 = "IVAN"
+        p.text                 = "Sergey"
         p.font_path            = ""
         p.char_spacing         = 1.0
-        p.base_offset          = 3.0
+        p.base_offset          = 2.0
         p.base_height          = 3.0
         p.letter_height        = 2.0
         p.lug_enable           = True
         p.lug_side             = "LEFT"
-        p.lug_size_x           = 8.0
-        p.lug_size_y           = 8.0
+        p.lug_size_x           = 6.0
+        p.lug_size_y           = 6.0
         p.lug_chamfer          = 1.5
         p.lug_chamfer_segments = 4
         p.lug_offset_y         = 0.0
         p.lug_hole_diameter    = 2.0
+        p.lug_hole_margin      = 2.0
         self.report({"INFO"}, "Settings reset")
         return {"FINISHED"}
 
@@ -756,6 +767,7 @@ class KEYCHAIN_PT_Panel(Panel):
             row.prop(props, "lug_chamfer_segments")
             box.prop(props, "lug_offset_y")
             box.prop(props, "lug_hole_diameter")
+            box.prop(props, "lug_hole_margin")
 
         layout.separator()
         layout.operator("keychain.generate", icon="MESH_DATA")
