@@ -58,6 +58,7 @@ translations_dict = {
         ("*", "Y Offset (mm)"):                      "Смещение по Y (мм)",
         ("*", "Hole Diameter (mm)"):                 "Диаметр отверстия (мм)",
         ("*", "Hole Edge Margin (mm)"):             "Отступ от края ушка (мм)",
+        ("*", "Oval Hole"):                         "Овальное отверстие",
 
         # Свойства — подсказки
         ("*", "Text to engrave on the keychain"):    "Надпись на брелоке",
@@ -77,6 +78,7 @@ translations_dict = {
         ("*", "Ear offset along Y relative to base centre"): "Смещение ушка по Y относительно центра подложки",
         ("*", "Diameter of the key ring hole"):      "Диаметр отверстия для кольца",
         ("*", "Distance from the nearest hole edge to the outer ear edge"): "Расстояние от ближайшего края отверстия до внешнего края ушка",
+        ("*", "Expand hole along Y so its edges are exactly Hole Edge Margin away from the ear edges"): "Расширить отверстие по Y так, чтобы расстояние от его краёв до краёв ушка равнялось значению «Отступ от края ушка»",
     }
 }
 
@@ -425,7 +427,7 @@ def create_ear_2d_right(context, inner_x, outer_x, y0, y1, chamfer, segs):
 # Отверстие в ушке
 # ---------------------------------------------------------------------------
 
-def cut_ear_hole(context, obj, outer_x, yc, base_h, hole_d, side="LEFT", margin=2.0):
+def cut_ear_hole(context, obj, outer_x, yc, base_h, hole_d, side="LEFT", margin=2.0, oval=False, lug_y=6.0):
     hole_r = hole_d / 2.0
     if side == "LEFT":
         cx = outer_x + hole_r + margin
@@ -435,13 +437,19 @@ def cut_ear_hole(context, obj, outer_x, yc, base_h, hole_d, side="LEFT", margin=
     cz  = base_h / 2.0
 
     bpy.ops.mesh.primitive_cylinder_add(
-        vertices=48,
+        vertices=64,
         radius=hole_r,
         depth=base_h + 1.0,
         location=(cx, cy, cz),
     )
     cyl = context.active_object
     cyl.name = "_KM_EarHoleCyl"
+
+    if oval:
+        oval_ry = lug_y / 2.0 - margin
+        if oval_ry > hole_r:
+            cyl.scale.y = oval_ry / hole_r
+            bpy.ops.object.transform_apply(scale=True)
 
     set_active(context, obj)
     mod = obj.modifiers.new("EarHole", "BOOLEAN")
@@ -473,6 +481,12 @@ class KEYCHAIN_OT_Generate(Operator):
         if not text:
             self.report({"WARNING"}, "Enter text!")
             return {"CANCELLED"}
+
+        text_or_font_changed = (text != props.last_text or font_path != props.last_font)
+        if not text_or_font_changed and props.last_name:
+            old = bpy.data.objects.get(props.last_name)
+            if old:
+                bpy.data.objects.remove(old, do_unlink=True)
 
         delete_by_prefix("_KM_")
 
@@ -551,7 +565,7 @@ class KEYCHAIN_OT_Generate(Operator):
                 inner_x, y0, y1, side=side
             )
 
-            ear_info = {"outer_x": outer_x, "yc": yc, "side": side}
+            ear_info = {"outer_x": outer_x, "yc": yc, "side": side, "lug_y": lug_y}
 
         # ── 5. Экструзия подложки вниз ─────────────────────────────────────
         set_active(context, base_flat)
@@ -598,7 +612,9 @@ class KEYCHAIN_OT_Generate(Operator):
                          ear_info["outer_x"], ear_info["yc"],
                          base_h, props.lug_hole_diameter,
                          ear_info.get("side", "LEFT"),
-                         props.lug_hole_margin)
+                         props.lug_hole_margin,
+                         props.lug_hole_oval,
+                         ear_info.get("lug_y", 6.0))
 
         # ── 9. Shade Auto Smooth ───────────────────────────────────────────
         set_active(context, final_obj)
@@ -611,6 +627,10 @@ class KEYCHAIN_OT_Generate(Operator):
             c for c in text if c.isascii() and (c.isalnum() or c in " _-")
         )[:20].strip() or "keychain"
         final_obj.name = f"Keychain_{safe}"
+
+        props.last_name = final_obj.name
+        props.last_text = text
+        props.last_font = font_path
 
         self.report({"INFO"}, f"Keychain '{text}' created!")
         return {"FINISHED"}
@@ -695,6 +715,14 @@ class KeychainProperties(PropertyGroup):
         description="Distance from the nearest hole edge to the outer ear edge",
         default=2.0, min=0.5, max=10.0,
         precision=1, step=5)
+    lug_hole_oval: BoolProperty(
+        name="Oval Hole",
+        description="Expand hole along Y so its edges are exactly Hole Edge Margin away from the ear edges",
+        default=False)
+    # Internal tracking — not shown in UI
+    last_name: StringProperty(default="", options={"HIDDEN"})
+    last_text: StringProperty(default="", options={"HIDDEN"})
+    last_font: StringProperty(default="", options={"HIDDEN"})
 
 
 # ---------------------------------------------------------------------------
@@ -724,6 +752,7 @@ class KEYCHAIN_OT_Reset(Operator):
         p.lug_offset_y         = 0.0
         p.lug_hole_diameter    = 2.0
         p.lug_hole_margin      = 2.0
+        p.lug_hole_oval        = False
         self.report({"INFO"}, "Settings reset")
         return {"FINISHED"}
 
@@ -768,6 +797,7 @@ class KEYCHAIN_PT_Panel(Panel):
             box.prop(props, "lug_offset_y")
             box.prop(props, "lug_hole_diameter")
             box.prop(props, "lug_hole_margin")
+            box.prop(props, "lug_hole_oval")
 
         layout.separator()
         layout.operator("keychain.generate", icon="MESH_DATA")
