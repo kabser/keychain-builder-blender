@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Keychain Maker",
     "author": "@kabser",
-    "version": (1, 1, 1),
+    "version": (1, 1, 2),
     "blender": (4, 0, 0),
     "location": "View3D > N-Panel > Keychain",
     "description": "Keychain generator with ear",
