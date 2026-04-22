@@ -33,7 +33,7 @@ Type your text, pick a font, press **Create Keychain** — get a ready-to-print 
 
 ## Installation
 
-1. Download `Keychain_Builder_for_Blender.py`
+1. Download `keychain_maker.py`
 2. In Blender: **Edit → Preferences → Add-ons → Install**
 3. Select the downloaded file and enable the addon
 4. Open the **N-panel** in the 3D Viewport (press `N`) → tab **Keychain 1.1**
@@ -166,7 +166,7 @@ GNU GPL v3 — see [LICENSE](LICENSE)
 
 ## Установка
 
-1. Скачай файл `Keychain_Builder_for_Blender.py`
+1. Скачай файл `keychain_maker.py`
 2. В Blender: **Edit → Preferences → Add-ons → Install**
 3. Выбери скачанный файл и включи аддон
 4. Открой **N-панель** в 3D Viewport (клавиша `N`) → вкладка **Keychain 1.1**

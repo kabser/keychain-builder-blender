@@ -33,8 +33,7 @@ The addon tracks the last-created keychain automatically — no manual cleanup n
 
 | File | Description |
 |------|-------------|
-| `Keychain_Builder_for_Blender.py` | The add-on. Install via Edit → Preferences → Add-ons → Install |
-| `keychain_maker_manual.docx` | User manual (English + Russian) |
+| `keychain_maker.py` | The add-on. Install via Edit → Preferences → Add-ons → Install |
 
 ---
 
@@ -81,8 +80,7 @@ The addon tracks the last-created keychain automatically — no manual cleanup n
 
 | Файл | Описание |
 |------|----------|
-| `Keychain_Builder_for_Blender.py` | Аддон. Установка через Edit → Preferences → Add-ons → Install |
-| `keychain_maker_manual.docx` | Руководство пользователя (английский + русский) |
+| `keychain_maker.py` | Аддон. Установка через Edit → Preferences → Add-ons → Install |
 
 ---
 
